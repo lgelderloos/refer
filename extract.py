@@ -8,10 +8,9 @@ import json
 
 base_model = VGG16(weights='imagenet')
 # note: this is using the pre-softmax layer form the 16 layer VGGNet.
-# not sure if Lazaridou et al a0 use 16 or 19 layer VGGNet and b)
-# use this exact layer ("second to last fully connected layer" could
-# also mean fc1?)
-model = Model(input=base_model.input, output=base_model.get_layer('fc2').output)
+# not sure if Lazaridou et al use 16 or 19 layer VGGNet and b)
+# use this exact layer 
+model = Model(input=base_model.input, output=base_model.get_layer('fc1').output)
 cropids = []
 
 with open("boxes.json", "r") as f:
@@ -39,9 +38,9 @@ for i in range(len(cropids)):
     features[i,:] = feats[0,:]
     
 # save feature array
-np.save("data/crops/VGG16_fc2.npy", features)
+np.save("data/images/crops/VGG16_fc1.npy", features)
     
 # dump list with (img, obj) tuples
 # (same order as numpy array)
-with open("crop_ids.p", wb) as f:
+with open("crop_ids.p", "wb") as f:
     pickle.dump(cropids, f)
